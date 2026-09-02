@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 export default function SearchPage() {
   const [location, setLocation] = useState("");
@@ -9,10 +10,25 @@ export default function SearchPage() {
   function handleSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    console.log("Tee time search submitted:", location);
-
-    setSearchedLocation(location);
-  }
+    trackEvent("SEARCH_SUBMITTED", {
+        location: location,
+      });
+  
+      setSearchedLocation(location);
+    }
+  
+    function handleTeeTimeSelect(
+      course: string,
+      time: string,
+      price: number
+    ) {
+      trackEvent("TEE_TIME_SELECTED", {
+        course: course,
+        time: time,
+        price: price,
+      });
+    }
+  
 
   return (
     <main className="p-8">
@@ -55,9 +71,18 @@ export default function SearchPage() {
             <p>10:30 AM</p>
             <p>$55 per player</p>
 
-            <button className="mt-3 border px-4 py-2">
-              Select Tee Time
-            </button>
+            <button
+  className="mt-3 border px-4 py-2"
+  onClick={() =>
+    handleTeeTimeSelect(
+      "Lake Oconee Golf Club",
+      "10:30 AM",
+      55
+    )
+  }
+>
+  Select Tee Time
+</button>
           </div>
 
           <div className="mt-4 border p-4">
@@ -65,9 +90,18 @@ export default function SearchPage() {
             <p>11:15 AM</p>
             <p>$48 per player</p>
 
-            <button className="mt-3 border px-4 py-2">
-              Select Tee Time
-            </button>
+            <button
+  className="mt-3 border px-4 py-2"
+  onClick={() =>
+    handleTeeTimeSelect(
+      "Greensboro Country Club",
+      "11:15 AM",
+      48
+    )
+  }
+>
+  Select Tee Time
+</button>
           </div>
         </section>
       )}
