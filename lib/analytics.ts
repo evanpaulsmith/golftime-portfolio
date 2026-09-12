@@ -4,7 +4,7 @@ export type AnalyticsEvent = {
     properties?: Record<string, unknown>;
   };
   
-  export function trackEvent(
+  export async function trackEvent(
     event: string,
     properties?: Record<string, unknown>
   ) {
@@ -15,4 +15,21 @@ export type AnalyticsEvent = {
     };
   
     console.log("Analytics Event:", analyticsEvent);
+  
+    try {
+      const response = await fetch("/api/events", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(analyticsEvent),
+      });
+  
+      if (!response.ok) {
+        console.error("Analytics API error:", response.status);
+      }
+    } catch (error) {
+      console.error("Failed to send analytics event:", error);
+    }
   }
+ 
