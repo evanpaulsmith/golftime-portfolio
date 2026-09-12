@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 
@@ -14,10 +14,12 @@ export default function BookingPage() {
 const [email, setEmail] = useState("");
 const [players, setPlayers] = useState(1);
 const [bookingComplete, setBookingComplete] = useState(false);
+const bookingStartedTracked = useRef(false);
 
-
-  useEffect(() => {
-    if (course && time && price) {
+useEffect(() => {
+    if (course && time && price && !bookingStartedTracked.current) {
+      bookingStartedTracked.current = true;
+  
       trackEvent("BOOKING_STARTED", {
         course: course,
         time: time,
@@ -30,14 +32,12 @@ const [bookingComplete, setBookingComplete] = useState(false);
     event.preventDefault();
   
     trackEvent("BOOKING_COMPLETED", {
-      course: course,
-      time: time,
-      price: Number(price),
-      name: name,
-      email: email,
-      players: players,
-      totalPrice: Number(price) * players,
-    });
+        course: course,
+        time: time,
+        price: Number(price),
+        players: players,
+        totalPrice: Number(price) * players,
+      });
   
     setBookingComplete(true);
   }
