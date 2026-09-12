@@ -1,11 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 
+
 export default function SearchPage() {
-  const [location, setLocation] = useState("");
-  const [searchedLocation, setSearchedLocation] = useState("");
+    const router = useRouter();
+  
+    const [location, setLocation] = useState("");
+    const [searchedLocation, setSearchedLocation] = useState("");
+
 
   function handleSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,6 +32,11 @@ export default function SearchPage() {
         time: time,
         price: price,
       });
+      router.push(
+        `/booking?course=${encodeURIComponent(course)}&time=${encodeURIComponent(
+          time
+        )}&price=${price}`
+      );
     }
   
 
