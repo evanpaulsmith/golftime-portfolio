@@ -1,8 +1,20 @@
 export type AnalyticsEvent = {
     event: string;
     timestamp: string;
+    sessionId: string;
     properties?: Record<string, unknown>;
   };
+  
+  function getSessionId() {
+    let sessionId = sessionStorage.getItem("golftime_session_id");
+  
+    if (!sessionId) {
+      sessionId = crypto.randomUUID();
+      sessionStorage.setItem("golftime_session_id", sessionId);
+    }
+  
+    return sessionId;
+  }
   
   export async function trackEvent(
     event: string,
@@ -11,6 +23,7 @@ export type AnalyticsEvent = {
     const analyticsEvent: AnalyticsEvent = {
       event,
       timestamp: new Date().toISOString(),
+      sessionId: getSessionId(),
       properties,
     };
   
@@ -32,4 +45,3 @@ export type AnalyticsEvent = {
       console.error("Failed to send analytics event:", error);
     }
   }
- 

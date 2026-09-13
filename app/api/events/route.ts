@@ -8,9 +8,10 @@ export async function POST(request: Request) {
     const event = await request.json();
 
     if (
-      typeof event.event !== "string" ||
-      typeof event.timestamp !== "string"
-    ) {
+        typeof event.event !== "string" ||
+        typeof event.timestamp !== "string" ||
+        typeof event.sessionId !== "string"
+      ) {
       return NextResponse.json(
         { success: false, error: "Invalid event payload" },
         { status: 400 }
@@ -18,16 +19,17 @@ export async function POST(request: Request) {
     }
 
     await pool.query(
-      `INSERT INTO analytics_events
-        (event_name, event_timestamp, properties)
-       VALUES ($1, $2, $3::jsonb)`,
-      [
-        event.event,
-        event.timestamp,
-        JSON.stringify(event.properties ?? {}),
-      ]
-    );
-
+        `INSERT INTO analytics_events
+          (event_name, event_timestamp, session_id, properties)
+         VALUES ($1, $2, $3, $4::jsonb)`,
+        [
+          event.event,
+          event.timestamp,
+          event.sessionId,
+          JSON.stringify(event.properties ?? {}),
+        ]
+      );
+      
     console.log("Analytics event saved:", event.event);
 
     return NextResponse.json({
