@@ -1,36 +1,141 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GolfTime Analytics Implementation
 
-## Getting Started
+GolfTime is a full-stack analytics implementation project demonstrating how user behavior can be instrumented, collected, stored, analyzed, and visualized across a booking journey.
 
-First, run the development server:
+The project was built as a portfolio demonstration of digital analytics implementation and implementation engineering skills.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## What It Demonstrates
+
+- Frontend event instrumentation
+- JavaScript/TypeScript analytics tracking
+- Session-based event tracking
+- REST-style analytics event collection
+- Server-side event validation
+- PostgreSQL event storage
+- JSONB event properties
+- SQL analysis
+- Conversion funnel measurement
+- Revenue and booking analysis
+- Metabase dashboard reporting
+- API testing with Postman
+- Git-based development workflow
+
+## Architecture
+
+```text
+User Interaction
+      ↓
+Next.js Frontend
+      ↓
+Analytics Tracking
+      ↓
+POST /api/events
+      ↓
+Next.js API
+      ↓
+PostgreSQL
+      ↓
+SQL Analysis
+      ↓
+Metabase Dashboard
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tracked Booking Journey
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+GolfTime instruments the following events:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. `SEARCH_SUBMITTED`
+2. `TEE_TIME_SELECTED`
+3. `BOOKING_STARTED`
+4. `BOOKING_COMPLETED`
 
-## Learn More
+Events contain a timestamp, session identifier, and event-specific properties.
 
-To learn more about Next.js, take a look at the following resources:
+This allows individual interactions to be associated with a broader user journey.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Example Analytics Event
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```json
+{
+  "event": "BOOKING_COMPLETED",
+  "timestamp": "2026-09-20T12:59:00.000Z",
+  "sessionId": "example-session-id",
+  "properties": {
+    "course": "Greensboro Country Club",
+    "time": "11:15 AM",
+    "price": 48,
+    "players": 2,
+    "totalPrice": 96
+  }
+}
+```
 
-## Deploy on Vercel
+## Analytics Dashboard
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The PostgreSQL event data is connected to Metabase for reporting.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Current analysis includes:
+
+- Completed bookings
+- Total players
+- Total booking revenue
+- Booking conversion funnel
+- Revenue by course
+- Recent analytics events
+- Unique-session conversion analysis
+
+## Technology Stack
+
+**Application**
+- Next.js
+- React
+- TypeScript
+
+**Analytics & Data**
+- JavaScript/TypeScript event tracking
+- PostgreSQL
+- SQL
+- JSONB
+- Metabase
+
+**Implementation & Testing**
+- Postman
+- Docker
+- Git
+
+## Repository Structure
+
+```text
+app/
+  api/events/       Analytics collection API
+  booking/          Booking flow
+  search/           Tee-time search flow
+
+lib/
+  analytics.ts      Client analytics implementation
+  db.ts             PostgreSQL connection
+
+sql/
+  schema.sql        Analytics database schema
+
+docs/
+  analytics-implementation.md
+  event-tracking-plan.md
+```
+
+## Documentation
+
+Detailed implementation documentation is available in:
+
+- `docs/analytics-implementation.md`
+- `docs/event-tracking-plan.md`
+
+These documents describe the event specification, architecture, implementation decisions, validation process, and reporting design.
+
+## Project Status
+
+The core analytics pipeline is operational:
+
+**Browser → API → PostgreSQL → SQL → Metabase**
+
+User interactions generate analytics events that are persisted in PostgreSQL and can be analyzed through SQL and Metabase reporting.
