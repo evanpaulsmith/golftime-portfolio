@@ -73,6 +73,8 @@ This allows individual interactions to be associated with a broader user journey
 ## Analytics Dashboard
 ![GolfTime Analytics Dashboard](public/screenshots/analytics-dashboard.png)
 
+
+
 The PostgreSQL event data is connected to Metabase for reporting.
 
 Current analysis includes:
@@ -84,6 +86,12 @@ Current analysis includes:
 - Revenue by course
 - Recent analytics events
 - Unique-session conversion analysis
+
+### GolfTime Search Experience
+
+The user-facing search flow generates the analytics events used throughout the implementation.
+
+![GolfTime Search Experience](public/screenshots/golftime-search.png)
 
 ## Technology Stack
 
