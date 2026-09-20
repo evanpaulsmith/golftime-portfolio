@@ -71,6 +71,7 @@ This allows individual interactions to be associated with a broader user journey
 ```
 
 ## Analytics Dashboard
+![GolfTime Analytics Dashboard](public/screenshots/analytics-dashboard.png)
 
 The PostgreSQL event data is connected to Metabase for reporting.
 
