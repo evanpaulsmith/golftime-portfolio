@@ -1,25 +1,34 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 
 export default function BookingPage() {
+  return (
+    <Suspense fallback={<main className="p-8">Loading booking...</main>}>
+      <BookingContent />
+    </Suspense>
+  );
+}
+
+function BookingContent() {
   const searchParams = useSearchParams();
 
   const course = searchParams.get("course");
   const time = searchParams.get("time");
   const price = searchParams.get("price");
-  const [name, setName] = useState("");
-const [email, setEmail] = useState("");
-const [players, setPlayers] = useState(1);
-const [bookingComplete, setBookingComplete] = useState(false);
-const bookingStartedTracked = useRef(false);
 
-useEffect(() => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [players, setPlayers] = useState(1);
+  const [bookingComplete, setBookingComplete] = useState(false);
+  const bookingStartedTracked = useRef(false);
+
+  useEffect(() => {
     if (course && time && price && !bookingStartedTracked.current) {
       bookingStartedTracked.current = true;
-  
+
       trackEvent("BOOKING_STARTED", {
         course: course,
         time: time,
@@ -30,15 +39,15 @@ useEffect(() => {
 
   function handleBookingSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-  
+
     trackEvent("BOOKING_COMPLETED", {
-        course: course,
-        time: time,
-        price: Number(price),
-        players: players,
-        totalPrice: Number(price) * players,
-      });
-  
+      course: course,
+      time: time,
+      price: Number(price),
+      players: players,
+      totalPrice: Number(price) * players,
+    });
+
     setBookingComplete(true);
   }
 
