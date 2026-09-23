@@ -11,7 +11,7 @@ The project was built as a portfolio demonstration of digital analytics implemen
 - Session-based event tracking
 - REST-style analytics event collection
 - Server-side event validation
-- PostgreSQL event storage
+- Cloud PostgreSQL event storage with Neon
 - JSONB event properties
 - SQL analysis
 - Conversion funnel measurement
@@ -19,6 +19,7 @@ The project was built as a portfolio demonstration of digital analytics implemen
 - Metabase dashboard reporting
 - API testing with Postman
 - Git-based development workflow
+- Production deployment with Vercel
 
 ## Architecture
 
@@ -33,12 +34,14 @@ POST /api/events
       ↓
 Next.js API
       ↓
-PostgreSQL
+Neon PostgreSQL
       ↓
 SQL Analysis
       ↓
 Metabase Dashboard
 ```
+
+The application is deployed publicly through Vercel. Production analytics events are sent through the Next.js API and persisted in a Neon-hosted PostgreSQL database.
 
 ## Tracked Booking Journey
 
@@ -51,7 +54,7 @@ GolfTime instruments the following events:
 
 Events contain a timestamp, session identifier, and event-specific properties.
 
-This allows individual interactions to be associated with a broader user journey.
+This allows individual interactions to be associated with a broader user journey and enables session-based funnel analysis.
 
 ## Example Analytics Event
 
@@ -71,11 +74,10 @@ This allows individual interactions to be associated with a broader user journey
 ```
 
 ## Analytics Dashboard
+
 ![GolfTime Analytics Dashboard](public/screenshots/analytics-dashboard.png)
 
-
-
-The PostgreSQL event data is connected to Metabase for reporting.
+PostgreSQL event data is connected to Metabase for analysis and reporting.
 
 Current analysis includes:
 
@@ -89,25 +91,29 @@ Current analysis includes:
 
 ### GolfTime Search Experience
 
-The user-facing search flow generates the analytics events used throughout the implementation.
+The user-facing search and booking flow generates the analytics events used throughout the implementation.
 
 ![GolfTime Search Experience](public/screenshots/golftime-search.png)
 
 ## Technology Stack
 
 **Application**
+
 - Next.js
 - React
 - TypeScript
+- Vercel
 
 **Analytics & Data**
+
 - JavaScript/TypeScript event tracking
-- PostgreSQL
+- Neon PostgreSQL
 - SQL
 - JSONB
 - Metabase
 
 **Implementation & Testing**
+
 - Postman
 - Docker
 - Git
@@ -143,8 +149,10 @@ These documents describe the event specification, architecture, implementation d
 
 ## Project Status
 
-The core analytics pipeline is operational:
+The core analytics pipeline is operational in production:
 
-**Browser → API → PostgreSQL → SQL → Metabase**
+**Browser → Vercel → Next.js API → Neon PostgreSQL → SQL → Metabase**
 
-User interactions generate analytics events that are persisted in PostgreSQL and can be analyzed through SQL and Metabase reporting.
+User interactions on the deployed Vercel application generate analytics events that are persisted in Neon PostgreSQL and can be analyzed through SQL and Metabase reporting.
+
+The production implementation has been validated end-to-end by completing the booking journey on the deployed application and confirming the resulting `SEARCH_SUBMITTED`, `TEE_TIME_SELECTED`, `BOOKING_STARTED`, and `BOOKING_COMPLETED` events in the production database.
